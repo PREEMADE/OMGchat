@@ -18,7 +18,7 @@ if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
 
-    import openai
+import openai
 
 openai.api_key = openai_api_key
 
