@@ -62,7 +62,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("💬 Mom Guilt Companion")
+st.title("Mom Guilt Companion")
 st.write("A safe space to navigate feelings and mom guilt—all powered by OMG.")
 
 # Prompt input
