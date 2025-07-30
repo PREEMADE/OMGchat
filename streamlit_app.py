@@ -6,11 +6,12 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Set page config
 st.set_page_config(
-    page_title="OMG Companion",
-    
+    page_title="Mom Guilt Companion",
+    page_icon="💬",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
+
 # Inject custom styles
 st.markdown("""
     <style>
@@ -62,8 +63,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("Mom Guilt Companion")")
-st.write("A safe space to navigate feelings and mom guilt—all powered by OMG.")
+st.title("Mom Guilt Companion")
+st.write("A safe space to navigate feelings and mom guilt—all powered by Overcoming Mom Guilt.")
 
 # Prompt input
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
