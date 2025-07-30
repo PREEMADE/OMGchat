@@ -7,7 +7,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 # Set page config
 st.set_page_config(
     page_title="Mom Guilt Companion",
-    page_icon="💬",
+    page_icon="",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
