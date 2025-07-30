@@ -23,6 +23,11 @@ st.markdown("""
         text-align: center !important;
         color: white;
     }
+    .logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
     input[type="text"], textarea {
         color: #19B2D6 !important;
         font-weight: bold;
