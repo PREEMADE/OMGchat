@@ -54,7 +54,7 @@ for m in st.session_state.messages
 
         # Stream the response to the chat using `st.write_stream`, then store it in 
         # session state.
-    with st.chat_message("assistant"):
+with st.chat_message("assistant"):
             response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[{"role": "user", "content": prompt}],
