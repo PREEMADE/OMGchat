@@ -39,7 +39,7 @@ if prompt := st.chat_input("What is up?"):
 
         # Store and display the current prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
+with st.chat_message("user"):
             st.markdown(prompt)
 
         # Generate a response using the OpenAI API.
