@@ -101,4 +101,4 @@ if prompt:
 st.markdown(assistant_response, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-        st.write(assistant_response)
+st.write(assistant_response)
