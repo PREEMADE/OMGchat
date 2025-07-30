@@ -11,6 +11,7 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed",
 )
+'<div class="logo"><img src="https://imgur.com/a/QEOExIK" width="100"/></div>'
 
 # Custom CSS styling
 st.markdown("""
