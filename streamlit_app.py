@@ -101,3 +101,20 @@ if prompt:
 st.markdown(assistant_response, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 st.write(assistant_response)
+
+st.markdown(
+    """
+    <script>
+    const observer = new MutationObserver(() => {
+        const container = document.getElementById('response-container');
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+    </script>
+    """,
+    unsafe_allow_html=True
+)
+
