@@ -85,4 +85,20 @@ if prompt:
         )
         assistant_response = response.choices[0].message.content
         st.success("Here’s a response from your companion:")
+        st.markdown(
+    """
+    <div id="response-container" style="
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+    ">
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(assistant_response, unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
         st.write(assistant_response)
