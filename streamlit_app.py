@@ -65,7 +65,7 @@ st.markdown(
 
 st.markdown(
     """
-    <h1 style='text-align: center; color: white;'>💬 Mom Guilt Companion</h1>
+    <h1 style='text-align: center; color: white;'>MOMPANION</h1>
     """,
     unsafe_allow_html=True
 )
