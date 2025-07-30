@@ -15,7 +15,6 @@ st.set_page_config(
 # Inject custom styles
 st.markdown("""
     <style>
-    /* Input field text color fix */
     input[type="text"], textarea {
         color: #19B2D6 !important;
         font-weight: bold;
@@ -57,16 +56,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Show logo (make sure the image is accessible)
+# Show logo
 st.markdown(
     '<div class="logo"><img src="https://i.imgur.com/XTLepWR.png" width="100"/></div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    """
-    <h1 style='text-align:center; color: white;'>MOMPANION</h1>
-    """,
+    "<h1 style='text-align:center; color: white;'>MOMPANION</h1>",
     unsafe_allow_html=True
 )
 st.write("A safe space to navigate feelings and mom guilt—all powered by OMG.")
@@ -84,32 +81,8 @@ if prompt:
             ]
         )
         assistant_response = response.choices[0].message.content
-        st.success("Here’s a response from your companion:")
-        st.markdown(
-    """
-    <div id="response-container" style="
-        max-height: 300px;
-        overflow-y: auto;
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 20px;
-    ">
-    """,
-    unsafe_allow_html=True
-)
-if prompt:
-    with st.spinner("Thinking..."):
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt}
-            ]
-        )
-        assistant_response = response.choices[0].message.content
 
-        # Scrollable container
+        # Display response in scrollable container
         st.markdown(
             """
             <div id="response-container" style="
@@ -126,7 +99,7 @@ if prompt:
         st.markdown(assistant_response, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Auto-scroll script
+        # Add scroll script only once
         st.markdown(
             """
             <script>
@@ -136,29 +109,8 @@ if prompt:
                     container.scrollTop = container.scrollHeight;
                 }
             });
-
             observer.observe(document.body, { childList: true, subtree: true });
             </script>
             """,
             unsafe_allow_html=True
         )
-
-st.markdown("</div>", unsafe_allow_html=True)
-st.write(assistant_response)
-
-st.markdown(
-    """
-    <script>
-    const observer = new MutationObserver(() => {
-        const container = document.getElementById('response-container');
-        if (container) {
-            container.scrollTop = container.scrollHeight;
-        }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
