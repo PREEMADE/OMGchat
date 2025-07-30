@@ -1,36 +1,29 @@
 import streamlit as st
 import openai
-import os
 
+# Set up OpenAI key from secrets
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-st.set_page_config(page_title="Mom Guilt Companion Chat", page_icon="💬")
+
 # Set page config
 st.set_page_config(
-    
     page_title="Mom Guilt Companion",
     page_icon="💬",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
+
+# Inject custom styles
+st.markdown("""
     <style>
     /* Input field text color fix */
     input[type="text"], textarea {
         color: #19B2D6 !important;
         font-weight: bold;
     }
-
-    /* Optional: also force placeholder color */
     ::placeholder {
         color: #19B2D6 !important;
         opacity: 0.7;
     }
-    </style>
-""", unsafe_allow_html=True)
-
-
-# Custom CSS styling
-st.markdown("""
-    <style>
     .stApp {
         background-color: #19B2D6;
         font-family: 'Helvetica Neue', sans-serif;
@@ -64,7 +57,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Show logo (host this somewhere like GitHub or Streamlit static folder)
+# Show logo (make sure the image is accessible)
 st.markdown(
     '<div class="logo"><img src="https://i.imgur.com/XTLepWR.png" width="100"/></div>',
     unsafe_allow_html=True
@@ -73,28 +66,18 @@ st.markdown(
 st.title("💬 Mom Guilt Companion")
 st.write("A safe space to navigate feelings and mom guilt—all powered by GPT‑3.5 turbo.")
 
-# Secure entry of API key
-import openai
-import streamlit as st
-
-# Use secret key from Streamlit Cloud
-openai_api_key = st.secrets["OPENAI_API_KEY"]
-import openai
-openai.api_key = openai_api_key
-
-
 # Prompt input
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
 
 if prompt:
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": user_input}
-    ]
-)
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
         assistant_response = response.choices[0].message.content
         st.success("Here’s a response from your companion:")
         st.write(assistant_response)
