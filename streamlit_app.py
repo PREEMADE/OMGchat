@@ -6,11 +6,28 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 st.set_page_config(page_title="Mom Guilt Companion Chat", page_icon="💬")
 # Set page config
 st.set_page_config(
+    
     page_title="Mom Guilt Companion",
     page_icon="💬",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
+st.markdown("""
+    <style>
+    /* Input field text color fix */
+    input[type="text"], textarea {
+        color: #19B2D6 !important;
+        font-weight: bold;
+    }
+
+    /* Optional: also force placeholder color */
+    ::placeholder {
+        color: #19B2D6 !important;
+        opacity: 0.7;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 
 # Custom CSS styling
 st.markdown("""
