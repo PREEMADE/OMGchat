@@ -4,6 +4,55 @@ import os
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 st.set_page_config(page_title="Mom Guilt Companion Chat", page_icon="💬")
+# Set page config
+st.set_page_config(
+    page_title="Mom Guilt Companion",
+    page_icon="💬",
+    layout="centered",
+    initial_sidebar_state="collapsed",
+)
+
+# Custom CSS styling
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #F8CF39;
+        font-family: 'Helvetica Neue', sans-serif;
+    }
+    .main {
+        color: #000000;
+    }
+    .stTextInput > div > div > input {
+        background-color: #ffffff;
+        border: 2px solid #19B2D6;
+        border-radius: 5px;
+        padding: 10px;
+    }
+    .stButton button {
+        background-color: #19B2D6;
+        color: white;
+        border-radius: 10px;
+        font-weight: bold;
+        padding: 0.5em 1em;
+    }
+    .stMarkdown h1 {
+        color: #19B2D6;
+    }
+    .stMarkdown p {
+        font-size: 1.1em;
+    }
+    .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Show logo (host this somewhere like GitHub or Streamlit static folder)
+st.markdown(
+    '<div class="logo"><img src="https://YOUR_IMAGE_URL_HERE" width="100"/></div>',
+    unsafe_allow_html=True
+)
 
 st.title("💬 Mom Guilt Companion")
 st.write("A safe space to navigate feelings and mom guilt—all powered by GPT‑3.5 turbo.")
