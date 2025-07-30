@@ -1,6 +1,8 @@
 import streamlit as st
 import openai
+import os
 
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 st.set_page_config(page_title="Mom Guilt Companion Chat", page_icon="💬")
 
 st.title("💬 Mom Guilt Companion")
