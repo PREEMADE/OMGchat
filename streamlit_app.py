@@ -25,7 +25,7 @@ st.markdown("""
     }
     .stApp {
         background-color: #19B2D6;
-        font-family: 'Helvetica Neue', sans-serif;
+        font-family: 'Poppins', sans-serif;
     }
     .main {
         color: #19B2D6;
