@@ -14,7 +14,8 @@ import streamlit as st
 
 # Use secret key from Streamlit Cloud
 openai_api_key = st.secrets["OPENAI_API_KEY"]
-client = OpenAI(api_key=openai_api_key)
+import openai
+openai.api_key = openai_api_key
 
 
 # Prompt input
