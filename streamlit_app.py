@@ -35,14 +35,18 @@ st.markdown("""
         font-weight: bold;
         padding: 0.5em 1em;
     }
-    .st.markdown("""
-    <style>
-    input {
-        color: #19B2D6 !important;
+    .stMarkdown h1 {
+        color: #19B2D6;
+    }
+    .stMarkdown p {
+        font-size: 1.1em;
+    }
+    .logo {
+        text-align: center;
+        margin-bottom: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
-
 
 # Show logo (host this somewhere like GitHub or Streamlit static folder)
 st.markdown(
