@@ -4,7 +4,7 @@ import openai
 # Set OpenAI API key securely
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Set page configuration
+# Page configuration
 st.set_page_config(
     page_title="Mompanion",
     page_icon="💬",
@@ -38,15 +38,19 @@ st.markdown("""
         padding: 10px;
     }
     .stButton button {
-        background-color: #19B2D6;
-        color: white;
+        background-color: #F8CF39;
+        color: #19B2D6;
         border-radius: 10px;
         font-weight: bold;
         padding: 0.5em 1em;
+        border: none;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     }
-    .logo {
+    .footer {
+        margin-top: 50px;
         text-align: center;
-        margin-bottom: 20px;
+        font-size: 0.9em;
+        color: white;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -61,50 +65,55 @@ st.markdown(
 st.markdown("<h1>MOMPANION</h1>", unsafe_allow_html=True)
 st.markdown("<p>A safe space to navigate feelings and mom guilt—all powered by OMG.</p>", unsafe_allow_html=True)
 
-# Text input
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
+    ]
+
+# Input prompt
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
 
-# Chat response logic
+# Generate response
 if prompt:
+    st.session_state.messages.append({"role": "user", "content": prompt})
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."},
-                {"role": "user", "content": prompt}
-            ]
+            messages=st.session_state.messages
         )
-        assistant_response = response.choices[0].message.content
+        reply = response.choices[0].message.content
+        st.session_state.messages.append({"role": "assistant", "content": reply})
 
-        # Scrollable container
-        st.markdown(
-            """
-            <div id="response-container" style="
-                max-height: 300px;
-                overflow-y: auto;
-                background-color: rgba(255, 255, 255, 0.1);
-                padding: 15px;
-                border-radius: 10px;
-                margin-top: 20px;
-            ">
-            """,
-            unsafe_allow_html=True
-        )
-        st.markdown(assistant_response, unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+# Display conversation
+if len(st.session_state.messages) > 1:
+    st.markdown("""
+    <div id="response-container" style="
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+    ">
+    """, unsafe_allow_html=True)
+    for msg in st.session_state.messages[1:]:
+        speaker = "**You:**" if msg["role"] == "user" else "**Companion:**"
+        st.markdown(f"{speaker} {msg['content']}")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-        # Auto-scroll script
-        st.markdown(
-            """
-            <script>
-            const observer = new MutationObserver(() => {
-                const container = document.getElementById('response-container');
-                if (container) {
-                    container.scrollTop = container.scrollHeight;
-                }
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-            </script>
-            """,
-            unsafe_allow_html=True
-        )
+    st.markdown("""
+        <script>
+        const container = document.getElementById('response-container');
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+        </script>
+    """, unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+<div class="footer">
+    💕 Built with love by the OMG Team | 🌟 Mom Guilt Companion © 2025
+</div>
+""", unsafe_allow_html=True)
