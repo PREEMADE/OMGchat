@@ -64,7 +64,7 @@ st.markdown(
 )
 
 st.title("💬 Mom Guilt Companion")
-st.write("A safe space to navigate feelings and mom guilt—all powered by GPT‑3.5 turbo.")
+st.write("A safe space to navigate feelings and mom guilt—all powered by OMG.")
 
 # Prompt input
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
