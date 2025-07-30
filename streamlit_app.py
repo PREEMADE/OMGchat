@@ -9,14 +9,13 @@ st.title("💬 Mom Guilt Companion")
 st.write("A safe space to navigate feelings and mom guilt—all powered by GPT‑3.5 turbo.")
 
 # Secure entry of API key
-openai_api_key = st.text_input("🔑 Enter your OpenAI API Key", type="password")
+import openai
+import streamlit as st
 
-if not openai_api_key:
-    st.warning("Please add your OpenAI API key to continue.")
-    st.stop()
+# Use secret key from Streamlit Cloud
+openai_api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=openai_api_key)
 
-# Initialize openai client
-client = openai.OpenAI(api_key=openai_api_key)
 
 # Prompt input
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
