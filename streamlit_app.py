@@ -6,7 +6,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Set page config
 st.set_page_config(
-    page_title="Mom Guilt Companion",
+    page_title="OMG Companion",
     
     layout="centered",
     initial_sidebar_state="collapsed",
@@ -25,7 +25,7 @@ st.markdown("""
     }
     .stApp {
         background-color: #19B2D6;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Helvetica Neue', sans-serif;
     }
     .main {
         color: #19B2D6;
