@@ -89,16 +89,13 @@ prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, a
 
 if prompt:
     with st.spinner("Thinking..."):
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": (
-                    "You are a compassionate companion for moms experiencing stress and guilt. "
-                    "Provide empathetic support, affirmations, and helpful suggestions."
-                )},
-                {"role": "user", "content": prompt}
-            ],
-        )
+        response = openai.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": user_input}
+    ]
+)
         assistant_response = response.choices[0].message.content
         st.success("Here’s a response from your companion:")
         st.write(assistant_response)
