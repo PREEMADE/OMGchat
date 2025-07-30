@@ -62,9 +62,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("""
+st.title("
     <h1 style='text-align: center; color: white;'>Mom Guilt Companion</h1>
-    """)
+    ")
 st.write("A safe space to navigate feelings and mom guilt—all powered by OMG.")
 
 # Prompt input
