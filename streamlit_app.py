@@ -50,7 +50,7 @@ st.markdown("""
 
 # Show logo (host this somewhere like GitHub or Streamlit static folder)
 st.markdown(
-    '<div class="logo"><img src="https://imgur.com/a/QEOExIK" width="100"/></div>',
+    '<div class="logo"><img src="https://i.imgur.com/XTLepWR.png" width="100"/></div>',
     unsafe_allow_html=True
 )
 
