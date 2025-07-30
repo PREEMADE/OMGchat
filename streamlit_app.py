@@ -65,11 +65,11 @@ st.markdown(
 
 st.markdown(
     """
-    <h1 style='text-align: center; color: white;'>  MOMPANION</h1>
+    <h1 style='text-align:center; color: white;'>MOMPANION</h1>
     """,
     unsafe_allow_html=True
 )
-st.write("A safe space to navigate feelings and mom guilt—all powered by Overcoming Mom Guilt.")
+st.write("A safe space to navigate feelings and mom guilt—all powered by OMG.")
 
 # Prompt input
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
