@@ -16,7 +16,7 @@ st.set_page_config(
 st.markdown("""
     <style>
     .stApp {
-        background-color: #F8CF39;
+        background-color: #19B2D6;
         font-family: 'Helvetica Neue', sans-serif;
     }
     .main {
