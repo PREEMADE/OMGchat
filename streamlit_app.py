@@ -12,6 +12,7 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed",
 )
+user_input = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
 st.markdown("""
     <style>
     /* Input field text color fix */
