@@ -20,7 +20,7 @@ st.markdown("""
         font-family: 'Helvetica Neue', sans-serif;
     }
     .main {
-        color: #000000;
+        color: #19B2D6;
     }
     .stTextInput > div > div > input {
         background-color: #ffffff;
