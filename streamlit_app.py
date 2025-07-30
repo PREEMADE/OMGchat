@@ -1,20 +1,28 @@
 import streamlit as st
 import openai
 
-# Set up OpenAI key from secrets
+# Set OpenAI API key securely
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Set page config
+# Set page configuration
 st.set_page_config(
-    page_title="Mom Guilt Companion",
+    page_title="Mompanion",
     page_icon="💬",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
-# Inject custom styles
+# Inject CSS styling
 st.markdown("""
     <style>
+    .stApp {
+        background-color: #19B2D6;
+        font-family: 'Helvetica Neue', sans-serif;
+    }
+    h1, h2, h3, p {
+        text-align: center !important;
+        color: white;
+    }
     input[type="text"], textarea {
         color: #19B2D6 !important;
         font-weight: bold;
@@ -22,13 +30,6 @@ st.markdown("""
     ::placeholder {
         color: #19B2D6 !important;
         opacity: 0.7;
-    }
-    .stApp {
-        background-color: #19B2D6;
-        font-family: 'Helvetica Neue', sans-serif;
-    }
-    .main {
-        color: #19B2D6;
     }
     .stTextInput > div > div > input {
         background-color: #ffffff;
@@ -43,12 +44,6 @@ st.markdown("""
         font-weight: bold;
         padding: 0.5em 1em;
     }
-    .stMarkdown h1 {
-        color: #19B2D6;
-    }
-    .stMarkdown p {
-        font-size: 1.1em;
-    }
     .logo {
         text-align: center;
         margin-bottom: 20px;
@@ -56,33 +51,32 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Show logo
+# Display logo
 st.markdown(
     '<div class="logo"><img src="https://i.imgur.com/XTLepWR.png" width="100"/></div>',
     unsafe_allow_html=True
 )
 
-st.markdown(
-    "<h1 style='text-align:center; color: white;'>MOMPANION</h1>",
-    unsafe_allow_html=True
-)
-st.write("A safe space to navigate feelings and mom guilt—all powered by OMG.")
+# Title and subtitle
+st.markdown("<h1>MOMPANION</h1>", unsafe_allow_html=True)
+st.markdown("<p>A safe space to navigate feelings and mom guilt—all powered by OMG.</p>", unsafe_allow_html=True)
 
-# Prompt input
+# Text input
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
 
+# Chat response logic
 if prompt:
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."},
                 {"role": "user", "content": prompt}
             ]
         )
         assistant_response = response.choices[0].message.content
 
-        # Display response in scrollable container
+        # Scrollable container
         st.markdown(
             """
             <div id="response-container" style="
@@ -99,7 +93,7 @@ if prompt:
         st.markdown(assistant_response, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Add scroll script only once
+        # Auto-scroll script
         st.markdown(
             """
             <script>
