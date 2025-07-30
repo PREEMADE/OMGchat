@@ -12,47 +12,56 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Custom CSS styling
 st.markdown("""
     <style>
+    /* Overall background */
     .stApp {
-        background-color: #19B2D6;
+        background-color: #F8CF39;
         font-family: 'Helvetica Neue', sans-serif;
-    }
-    .main {
         color: #000000;
     }
-    .stTextInput > div > div > input {
-        background-color: #ffffff;
-        border: 2px solid #19B2D6;
-        border-radius: 5px;
-        padding: 10px;
-    }
-    .stButton button {
-        background-color: #19B2D6;
-        color: white;
-        border-radius: 10px;
+
+    /* Chat input text styling */
+    input {
+        color: #19B2D6 !important;
         font-weight: bold;
-        padding: 0.5em 1em;
+        background-color: white !important;
+        border: 2px solid #19B2D6 !important;
+        border-radius: 8px !important;
+        padding: 10px !important;
     }
-    .stMarkdown h1 {
+
+    /* Send button styling */
+    button[kind="primary"] {
+        background-color: #19B2D6 !important;
+        color: white !important;
+        border-radius: 8px !important;
+        font-weight: bold;
+        padding: 0.5em 1.2em !important;
+        border: none;
+    }
+
+    /* Make chat and headers match brand */
+    h1, h2, h3, h4 {
         color: #19B2D6;
     }
+
+    /* Optional: adjust text areas if used */
+    textarea {
+        color: #19B2D6 !important;
+        border: 2px solid #19B2D6 !important;
+        background-color: white !important;
+        border-radius: 8px !important;
+        font-weight: bold;
+    }
+
+    /* Optional: refine text sizing */
     .stMarkdown p {
         font-size: 1.1em;
-    }
-    .logo {
-        text-align: center;
-        margin-bottom: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Show logo (host this somewhere like GitHub or Streamlit static folder)
-st.markdown(
-    '<div class="logo"><img src="https://i.imgur.com/XTLepWR.png" width="100"/></div>',
-    unsafe_allow_html=True
-)
 
 st.title("💬 Mom Guilt Companion")
 st.write("A safe space to navigate feelings and mom guilt—all powered by GPT‑3.5 turbo.")
