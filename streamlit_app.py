@@ -41,7 +41,7 @@ st.markdown("""
     .stMarkdown p {
         font-size: 1.1em;
     }
-    .logo {'<div class="logo"><img src="https://imgur.com/a/QEOExIK" width="100"/></div>'
+    .logo {
         text-align: center;
         margin-bottom: 20px;
     }
@@ -50,7 +50,7 @@ st.markdown("""
 
 # Show logo (host this somewhere like GitHub or Streamlit static folder)
 st.markdown(
-    '<div class="logo"><img src="https://YOUR_IMAGE_URL_HERE" width="100"/></div>',
+    '<div class="logo"><img src="https://imgur.com/a/QEOExIK" width="100"/></div>',
     unsafe_allow_html=True
 )
 
