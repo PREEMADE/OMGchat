@@ -1,62 +1,36 @@
 import streamlit as st
 import openai
-import os
 
-# Load API key securely from secrets
-openai_api_key = os.getenv("OPENAI_API_KEY")
-openai.api_key = openai_api_key
-"This is a simple chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
-"To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-"You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
+st.set_page_config(page_title="Mom Guilt Companion Chat", page_icon="💬")
 
+st.title("💬 Mom Guilt Companion")
+st.write("A safe space to navigate feelings and mom guilt—all powered by GPT‑3.5 turbo.")
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-openai_api_key = st.text_input("OpenAI API Key", type="password")
+# Secure entry of API key
+openai_api_key = st.text_input("🔑 Enter your OpenAI API Key", type="password")
+
 if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.", icon="🗝️")
-else:
+    st.warning("Please add your OpenAI API key to continue.")
+    st.stop()
 
-    import openai
+# Initialize openai client
+client = openai.OpenAI(api_key=openai_api_key)
 
-openai.api_key = openai_api_key
+# Prompt input
+prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
 
-
-    # Create a session state variable to store the chat messages. This ensures that the
-    # messages persist across reruns.
-if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    # Display the existing chat messages via `st.chat_message`.
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # Create a chat input field to allow the user to enter a message. This will display
-    # automatically at the bottom of the page.
-if prompt := st.chat_input("What is up?"):
-
-        # Store and display the current prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
-with st.chat_message("user"):
-            st.markdown(prompt)
-
-        # Generate a response using the OpenAI API.
-stream = client.chat.completions.create(
+if prompt:
+    with st.spinner("Thinking..."):
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": m["role"], "content": m["content"]}
-for m in st.session_state.messages
+                {"role": "system", "content": (
+                    "You are a compassionate companion for moms experiencing stress and guilt. "
+                    "Provide empathetic support, affirmations, and helpful suggestions."
+                )},
+                {"role": "user", "content": prompt}
             ],
-            stream=True,
         )
-
-        # Stream the response to the chat using `st.write_stream`, then store it in 
-        # session state.
-with st.chat_message("assistant"):
-            response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": "user", "content": prompt}],
-    stream=True
-)
+        assistant_response = response.choices[0].message.content
+        st.success("Here’s a response from your companion:")
+        st.write(assistant_response)
