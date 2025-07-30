@@ -98,7 +98,51 @@ if prompt:
     """,
     unsafe_allow_html=True
 )
-st.markdown(assistant_response, unsafe_allow_html=True)
+if prompt:
+    with st.spinner("Thinking..."):
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        assistant_response = response.choices[0].message.content
+
+        # Scrollable container
+        st.markdown(
+            """
+            <div id="response-container" style="
+                max-height: 300px;
+                overflow-y: auto;
+                background-color: rgba(255, 255, 255, 0.1);
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 20px;
+            ">
+            """,
+            unsafe_allow_html=True
+        )
+        st.markdown(assistant_response, unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        # Auto-scroll script
+        st.markdown(
+            """
+            <script>
+            const observer = new MutationObserver(() => {
+                const container = document.getElementById('response-container');
+                if (container) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
+
 st.markdown("</div>", unsafe_allow_html=True)
 st.write(assistant_response)
 
