@@ -25,7 +25,7 @@ st.markdown("""
     .logo {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     input[type="text"], textarea {
         color: #19B2D6 !important;
