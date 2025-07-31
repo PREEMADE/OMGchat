@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import random
 
 # Set OpenAI API key securely
 openai.api_key = st.secrets["OPENAI_API_KEY"]
@@ -7,6 +8,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 # Page configuration
 st.set_page_config(
     page_title="Mompanion",
+    page_icon="💬",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
@@ -25,7 +27,7 @@ st.markdown("""
     .logo {
         display: flex;
         justify-content: center;
-        margin-bottom: 6px;
+        margin-bottom: 20px;
     }
     input[type="text"], textarea {
         color: #19B2D6 !important;
@@ -66,13 +68,25 @@ st.markdown(
 )
 
 # Title and subtitle
-st.markdown("""
-    <div style="display: flex; justify-content: center;">
-        <h1 style="margin: 0 auto; text-align: center; color: white;">MOMPANION</h1>
-    </div>
-""", unsafe_allow_html=True)
-
+st.markdown("<h1>MOMPANION</h1>", unsafe_allow_html=True)
 st.markdown("<p>A safe space to navigate feelings and mom guilt—all powered by OMG.</p>", unsafe_allow_html=True)
+
+# Affirmation of the Day
+affirmations = [
+    "You're doing better than you think.",
+    "Motherhood has no manual, but you're writing a beautiful one.",
+    "Grace over guilt, always.",
+    "You are not alone in this journey.",
+    "Every moment is a chance to start fresh."
+]
+st.markdown(f"<p><em>🧡 {random.choice(affirmations)}</em></p>", unsafe_allow_html=True)
+
+# Conversation starters (if no prompt yet)
+starter_examples = [
+    "What’s something you’ve been holding in?",
+    "Describe your day in 3 words.",
+    "When was the last time you did something for yourself?"
+]
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -82,6 +96,9 @@ if "messages" not in st.session_state:
 
 # Input prompt
 prompt = st.text_input("What's on your mind today? (mom guilt, stress, doubts, anything)")
+
+if not prompt:
+    st.markdown(f"<p style='text-align:center; color:white; font-style:italic;'>Try this: \"{random.choice(starter_examples)}\"</p>", unsafe_allow_html=True)
 
 # Generate response
 if prompt:
@@ -123,6 +140,6 @@ if len(st.session_state.messages) > 1:
 # Footer
 st.markdown("""
 <div class="footer">
-    Built with love by the OMG Team | Mom Guilt Companion © 2025
+    💕 Built with love by the OMG Team | Mom Guilt Companion © 2025
 </div>
 """, unsafe_allow_html=True)
