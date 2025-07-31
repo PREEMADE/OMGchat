@@ -118,6 +118,6 @@ if len(st.session_state.messages) > 1:
 # Footer
 st.markdown("""
 <div class="footer">
-    💕 Built with love by the OMG Team | 🌟 Mom Guilt Companion © 2025
+    Built with love by the OMG Team | Mom Guilt Companion © 2025
 </div>
 """, unsafe_allow_html=True)
