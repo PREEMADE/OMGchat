@@ -66,7 +66,12 @@ st.markdown(
 )
 
 # Title and subtitle
-st.markdown("<h1>MOMPANION</h1>", unsafe_allow_html=True)
+st.markdown("""
+    <div style="display: flex; justify-content: center;">
+        <h1 style="margin: 0 auto; text-align: center; color: white;">MOMPANION</h1>
+    </div>
+""", unsafe_allow_html=True)
+
 st.markdown("<p>A safe space to navigate feelings and mom guilt—all powered by OMG.</p>", unsafe_allow_html=True)
 
 # Initialize chat history
