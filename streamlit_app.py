@@ -26,7 +26,7 @@ st.markdown("""
     .logo {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     input[type="text"], textarea {
         color: #19B2D6 !important;
@@ -70,7 +70,7 @@ st.markdown("""
 
 # Display logo
 st.markdown(
-    '<div class="logo"><img src="https://i.imgur.com/cVZroKA.png" width="100"/></div>',
+    '<div class="logo"><img src="https://i.imgur.com/lo97ICe.png" width="100"/></div>',
     unsafe_allow_html=True
 )
 
