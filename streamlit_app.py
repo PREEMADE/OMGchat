@@ -6,8 +6,8 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Page configuration
 st.set_page_config(
-    page_title="Mompanion",
-    page_icon="💬",
+    page_title="",
+    page_icon="",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
