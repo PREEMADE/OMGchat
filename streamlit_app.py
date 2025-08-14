@@ -26,7 +26,7 @@ st.markdown("""
     .logo {
         display: flex;
         justify-content: center;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
     input[type="text"], textarea {
         color: #19B2D6 !important;
@@ -40,7 +40,7 @@ st.markdown("""
         background-color: #ffffff;
         border: 2px solid #19B2D6;
         border-radius: 5px;
-        padding: 10px;
+        padding: 15px;
     }
     .stButton button {
         background-color: #F8CF39;
@@ -70,7 +70,7 @@ st.markdown("""
 
 # Display logo
 st.markdown(
-    '<div class="logo"><img src="https://i.imgur.com/lo97ICe.png" width="200"/></div>',
+    '<div class="logo"><img src="https://i.imgur.com/lo97ICe.png" width="250"/></div>',
     unsafe_allow_html=True
 )
 
