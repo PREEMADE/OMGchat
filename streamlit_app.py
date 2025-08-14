@@ -70,7 +70,7 @@ st.markdown("""
 
 # Display logo
 st.markdown(
-    '<div class="logo"><img src="https://i.imgur.com/lo97ICe.png" width="100"/></div>',
+    '<div class="logo"><img src="https://i.imgur.com/lo97ICe.png" width="200"/></div>',
     unsafe_allow_html=True
 )
 
