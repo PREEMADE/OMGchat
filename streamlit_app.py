@@ -70,12 +70,12 @@ st.markdown("""
 
 # Display logo
 st.markdown(
-    '<div class="logo"><img src="https://i.imgur.com/XTLepWR.png" width="100"/></div>',
+    '<div class="logo"><img src="https://i.imgur.com/cVZroKA.png" width="100"/></div>',
     unsafe_allow_html=True
 )
 
 # Title and subtitle
-st.markdown("<h1>MOMPANION</h1>", unsafe_allow_html=True)
+st.markdown("<h1></h1>", unsafe_allow_html=True)
 st.markdown("<p>A safe space to navigate feelings and mom guilt—all powered by OMG.</p>", unsafe_allow_html=True)
 
 # Initialize chat history
