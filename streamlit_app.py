@@ -78,44 +78,31 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* Simulate blinking cursor after placeholder */
-input::placeholder {
-    font-weight: bold;
-    color: #19B2D6;
-    animation: blink-caret 1s step-end infinite;
-}
+st.markdown(
+    """
+    <style>
+    @keyframes blink-caret {
+        0%, 100% { border-right: 0.15em solid rgba(25, 178, 214, 0); }  /* Transparent */
+        50% { border-right: 0.15em solid rgba(25, 178, 214, 1); }       /* Visible */
+    }
 
-@keyframes blink-caret {
-    1, 100% { border-right: .15em solid transparent; }
-    50% { border-right: .15em solid #19B2D6; }
-}
-</style>
-""", unsafe_allow_html=True)
+    .blinking-textarea::after {
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 1em;
+        animation: blink-caret 1s step-end infinite;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
-
-# Input prompt label
-st.markdown("""
-<span class="input-label">What's on your mind today? (mom guilt, stress, doubts, anything)</span>
-""", unsafe_allow_html=True)
-
-@keyframes blink-caret {
-  0%, 100% { border-right: 0.15em solid rgba(25, 178, 214, 0); }  /* Fully transparent */
-  50% { border-right: 0.15em solid rgba(25, 178, 214, 0.6); }   /* 60% opacity */
-}
-
-input::placeholder {
-  font-weight: bold;
-  color: #19B2D6;
-  animation: blink-caret 1s step-end infinite;
-}
-
 # Input prompt
 prompt = st.text_input("")
 
