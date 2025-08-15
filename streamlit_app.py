@@ -73,7 +73,7 @@ st.markdown(
     <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
         <img src="https://i.imgur.com/XTLepWR.png" width="110" style="margin-bottom: -15px;"/>
         <p style="margin-top: 5px; color: white; font-size: 18px; text-align: center;">
-            A safe space to navigate feelings and mom guilt—all powered by OMG.
+            A safe space to navigate feelings and mom guilt. Powered by OMG.
         </p>
     </div>, unsafe_allow_html=True)
 
