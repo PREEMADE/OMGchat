@@ -70,13 +70,12 @@ st.markdown("""
 
 # Display logo
 st.markdown(
-    '<div class="logo"><img src="https://i.imgur.com/lo97ICe.png" width="250"/></div>',
-    unsafe_allow_html=True
-)
-
-# Title and subtitle
-st.markdown("<h1></h1>", unsafe_allow_html=True)
-st.markdown("<p>A safe space to navigate feelings and mom guilt—all powered by OMG.</p>", unsafe_allow_html=True)
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+        <img src="https://i.imgur.com/XTLepWR.png" width="110" style="margin-bottom: -15px;"/>
+        <p style="margin-top: 5px; color: white; font-size: 18px; text-align: center;">
+            A safe space to navigate feelings and mom guilt—all powered by OMG.
+        </p>
+    </div>, unsafe_allow_html=True)
 
 # Initialize chat history
 if "messages" not in st.session_state:
