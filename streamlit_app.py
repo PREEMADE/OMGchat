@@ -88,7 +88,7 @@ input::placeholder {
 }
 
 @keyframes blink-caret {
-    5%, 100% { border-right: .15em solid transparent; }
+    70%, 100% { border-right: .15em solid transparent; }
     50% { border-right: .15em solid #19B2D6; }
 }
 </style>
