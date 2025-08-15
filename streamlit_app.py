@@ -105,6 +105,17 @@ st.markdown("""
 <span class="input-label">What's on your mind today? (mom guilt, stress, doubts, anything)</span>
 """, unsafe_allow_html=True)
 
+@keyframes blink-caret {
+  0%, 100% { border-right: 0.15em solid rgba(25, 178, 214, 0); }  /* Fully transparent */
+  50% { border-right: 0.15em solid rgba(25, 178, 214, 0.6); }   /* 60% opacity */
+}
+
+input::placeholder {
+  font-weight: bold;
+  color: #19B2D6;
+  animation: blink-caret 1s step-end infinite;
+}
+
 # Input prompt
 prompt = st.text_input("")
 
