@@ -72,7 +72,7 @@ st.markdown("""
 st.markdown("""
 <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
         <img src="https://i.imgur.com/iGDWGBX.png" width="222" style="margin-bottom: 5px;"/>
-        <p style="margin-top: 11px; color: white; font-size: 18px; text-align: center;">
+        <p style="margin-top: 20px; color: white; font-size: 18px; text-align: center;">
             A safe space to navigate feelings and mom guilt. Powered by OMG.
         </p>
     </div>
