@@ -63,7 +63,7 @@ st.markdown("""
         color: white;
         text-align: center;
         display: block;
-        margin-top: 20px;
+        margin-top: 11px;
     }
     </style>
 """, unsafe_allow_html=True)
