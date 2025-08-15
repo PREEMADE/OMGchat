@@ -78,6 +78,22 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Simulate blinking cursor after placeholder */
+input::placeholder {
+    font-weight: bold;
+    color: #19B2D6;
+    animation: blink-caret 1s step-end infinite;
+}
+
+@keyframes blink-caret {
+    0%, 100% { border-right: .15em solid transparent; }
+    50% { border-right: .15em solid #19B2D6; }
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [
