@@ -79,6 +79,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown(
+    "<div style='text-align: center; font-size: 24px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
     """
     <style>
     @keyframes blink-caret {
