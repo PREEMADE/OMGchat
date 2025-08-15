@@ -87,7 +87,7 @@ st.markdown(
     """
     <style>
     @keyframes blink-caret {
-        1%, 100% { border-right: 0.15em solid rgba(25, 178, 214, 0); }  /* Transparent */
+        50%, 100% { border-right: 0.15em solid rgba(25, 178, 214, 0); }  /* Transparent */
         50% { border-right: 0.15em solid rgba(25, 178, 214, 1); }       /* Visible */
     }
 
