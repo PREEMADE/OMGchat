@@ -1,11 +1,11 @@
 import streamlit as st
 import openai
-import datetime
+from datetime import datetime
 
 # Secure API key
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Page configuration
+# Page config
 st.set_page_config(
     page_title="Mompanion",
     page_icon="💬",
@@ -20,43 +20,21 @@ st.markdown("""
     background-color: #19B2D6;
     font-family: 'Helvetica Neue', sans-serif;
 }
-st.markdown("""
-    <style>
-    .stApp {
-        background-color: #19B2D6;
-        font-family: 'Helvetica Neue', sans-serif;
-    }
-    ...
-    .assistant-bubble ol, .assistant-bubble ul, .assistant-bubble li {
-        color: #000000 !important;  /* visible list text */
-    }
-    </style>
-""", unsafe_allow_html=True)
 h1, h2, h3, p {
     text-align: center !important;
     color: white;
 }
-.logo {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 0px;
-}
-input[type="text"], textarea {
-    color: #19B2D6 !important;
+.stTextInput > div > div > input {
+    background-color: #ffffff;
+    border: 2px solid #19B2D6;
+    border-radius: 8px;
+    padding: 12px;
     font-weight: bold;
+    color: #19B2D6 !important; /* brand blue */
 }
 ::placeholder {
     color: #19B2D6 !important;
     opacity: 0.7;
-}
-.stTextInput > div > div > input {
-    background-color: #ffffff;
-    border: 2px solid #19B2D6;
-    border-radius: 5px;
-    padding: 15px;
-    color: #19B2D6 !important;
-    font-weight: bold;
-    caret-color: #19B2D6;
 }
 .user-bubble {
     background-color: #F8CF39;
@@ -77,14 +55,21 @@ input[type="text"], textarea {
     max-width: 70%;
     float: left;
     clear: both;
+    border: 2px solid #F8CF39;
 }
-/* Fix numbered and bulleted list colors */
+/* Make list items inside assistant bubbles visible */
 .assistant-bubble ol, .assistant-bubble ul, .assistant-bubble li {
-    color: #19B2D6 !important;
+    color: #000000 !important; /* black text */
 }
-.divider {
-    clear: both;
-    margin: 10px 0;
+#response-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 .footer {
     position: fixed;
@@ -97,6 +82,7 @@ input[type="text"], textarea {
     color: white;
     padding: 10px 0;
     z-index: 100;
+    border-top: 2px solid white;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -111,42 +97,55 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Input label
 st.markdown(
-    "<div style='text-align: center; font-size: 24px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
+    "<div style='text-align: center; font-size: 22px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
     unsafe_allow_html=True
 )
 
-# Initialize chat history
+# Initialize session state
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
 
-# Input box with key for persistence
-chat_input = st.text_input("Type your message here...", key="chat_input")
+# Callback function to handle input
+def handle_input():
+    user_input = st.session_state.chat_input
+    if user_input.strip():
+        # Add user message
+        st.session_state.messages.append({"role": "user", "content": user_input, "time": datetime.now().strftime("%H:%M")})
+        # Generate assistant reply
+        with st.spinner("Thinking..."):
+            response = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}]
+                + [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages if m["role"] in ["user","assistant"]]
+            )
+            reply = response.choices[0].message.content
+            st.session_state.messages.append({"role": "assistant", "content": reply, "time": datetime.now().strftime("%H:%M")})
+    # Clear input automatically
+    st.session_state.chat_input = ""
 
-# Generate assistant response
-if chat_input:
-    st.session_state.messages.append({"role": "user", "content": chat_input})
-    with st.spinner("Thinking..."):
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=st.session_state.messages
-        )
-        reply = response.choices[0].message.content
-        st.session_state.messages.append({"role": "assistant", "content": reply})
-    # Clear input safely
-    st.session_state[chat_input] = ""
+# Input box
+st.text_input("Type your message here...", key="chat_input", on_change=handle_input)
 
 # Display conversation
-for i, msg in enumerate(st.session_state.messages[1:]):  # skip system prompt
-    timestamp = datetime.datetime.now().strftime("%H:%M")
-    if msg["role"] == "user":
-        st.markdown(f"<div class='user-bubble'>{msg['content']}<br><small>{timestamp}</small></div>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<div class='assistant-bubble'>{msg['content']}</div>", unsafe_allow_html=True)
-    st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
+if len(st.session_state.messages) > 1:
+    st.markdown("<div id='response-container'>", unsafe_allow_html=True)
+    for msg in st.session_state.messages[1:]:  # skip system
+        if msg["role"] == "user":
+            st.markdown(f"<div class='user-bubble'>{msg['content']}<br><small>{msg.get('time','')}</small></div>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<div class='assistant-bubble'>{msg['content']}<br><small>{msg.get('time','')}</small></div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # Auto-scroll to bottom
+    st.markdown("""
+    <script>
+    const container = document.getElementById('response-container');
+    if (container) { container.scrollTop = container.scrollHeight; }
+    </script>
+    """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
