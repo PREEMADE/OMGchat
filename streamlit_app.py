@@ -82,6 +82,24 @@ st.markdown(
     "<div style='text-align: center; font-size: 24px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
     unsafe_allow_html=True
 )
+st.markdown("""
+    <style>
+    /* Container for the chat input */
+    .stTextInput {
+        position: fixed;
+        bottom: 20px; /* distance from bottom */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%; /* make it wide */
+        z-index: 999;
+    }
+
+    /* Add some padding to bottom so messages don’t get covered */
+    .block-container {
+        padding-bottom: 100px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 st.markdown(
     """
