@@ -73,55 +73,48 @@ h1, h2, h3, p {
     padding: 15px;
     border-radius: 10px;
     margin-top: 20px;
-}
-/* Chat bubbles */
-.user-bubble {
-    background-color: #F8CF39; /* gold bubble */
-    color: white; /* ✅ white text for contrast */
-    padding: 10px 14px;
-    border-radius: 16px;
-    margin: 5px 0;
-    text-align: right;
-    max-width: 70%;
-    float: right;
-    clear: both;
-    font-weight: 500;
-}
-.companion-bubble {
-    background-color: white;
-    color: #19B2D6; /* ✅ brand blue text */
-    padding: 10px 14px;
-    border-radius: 16px;
-    margin: 5px 0;
-    text-align: left;
-    max-width: 70%;
-    float: left;
-    clear: both;
-    font-weight: 500;
-}
-.timestamp {
-    font-size: 0.75em;
-    color: gray;
-    display: block;
-    margin-top: 3px;
-}
-.new-message {
-    border: 2px solid #F8CF39;
-    animation: fadeIn 1s ease-in-out;
-}
-@keyframes fadeIn {
-    from { background-color: #F8CF39; }
-    to { background-color: white; }
-}
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .block-container { padding-bottom: 22vh !important; }
-}
-@media (min-width: 769px) {
-  .block-container { padding-bottom: 12vh !important; }
-}
-</style>
+# Chat bubble styling
+st.markdown("""
+    <style>
+    /* User messages (gold) */
+    .user-bubble {
+        background-color: #F8CF39;
+        color: #19B2D6;
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px;
+        max-width: 70%;
+        text-align: right;
+        margin-left: auto;
+    }
+
+    /* Assistant messages (white with gold border) */
+    .assistant-bubble {
+        background-color: white;
+        color: #19B2D6;  /* text now solid brand blue */
+        border: 2px solid #F8CF39;
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px;
+        max-width: 70%;
+        text-align: left;
+    }
+
+    /* Force list styling inside assistant messages */
+    .assistant-bubble ul,
+    .assistant-bubble ol {
+        color: #19B2D6;   /* brand blue for lists */
+        margin-left: 20px;
+    }
+
+    /* Hide Streamlit's default block-container ghost box */
+    .stTextInput > div:first-child {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    </style>
 """, unsafe_allow_html=True)
+
 
 # 🖼️ Logo + tagline
 st.markdown("""
