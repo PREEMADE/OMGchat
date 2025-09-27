@@ -129,12 +129,27 @@ def submit_message():
 # 📝 Input field with callback
 st.text_input("", key="chat_input", on_change=submit_message)
 
+import datetime
+
 # 📜 Display conversation
 if len(st.session_state.messages) > 1:
     st.markdown('<div id="response-container">', unsafe_allow_html=True)
-    for msg in st.session_state.messages[1:]:
-        speaker = "**You:**" if msg["role"] == "user" else "**Mompanion:**"
-        st.markdown(f"{speaker} {msg['content']}")
+
+    for i, msg in enumerate(st.session_state.messages[1:]):
+        timestamp = datetime.datetime.now().strftime("%H:%M")
+        if msg["role"] == "user":
+            st.markdown(
+                f"<div class='user-bubble'>{msg['content']}<span class='timestamp'>{timestamp}</span></div>",
+                unsafe_allow_html=True
+            )
+        else:
+            # Highlight only the latest assistant message
+            bubble_class = "companion-bubble new-message" if i == len(st.session_state.messages[1:]) - 1 else "companion-bubble"
+            st.markdown(
+                f"<div class='{bubble_class}'>{msg['content']}<span class='timestamp'>{timestamp}</span></div>",
+                unsafe_allow_html=True
+            )
+
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Auto-scroll
