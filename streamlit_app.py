@@ -53,13 +53,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Conversation display (staggered)
-for msg in st.session_state.messages[1:]:
-    if msg["role"] == "user":
-        st.markdown(f"<div class='user-bubble'>{msg['content']}</div>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<div class='assistant-bubble'>{msg['content']}</div>", unsafe_allow_html=True)
-
 #response-container {
     display: flex;
     flex-direction: column;
