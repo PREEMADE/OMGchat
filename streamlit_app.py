@@ -98,7 +98,7 @@ st.markdown(
     <style>
     /* Reduce space below the title */
     h1 {
-        margin-bottom: 10px !important;  /* default is usually ~20–30px */
+        margin-bottom: 10px important;  /* default is usually ~20–30px */
     }
 
     /* Reduce space between text input and elements above */
