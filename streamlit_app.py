@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Inject CSS styling
+# CSS
 st.markdown("""
 <style>
 .stApp {
@@ -28,29 +28,14 @@ h1, h2, h3, p {
     justify-content: center;
     margin-bottom: 0px;
 }
-input[type="text"], textarea {
-    color: #19B2D6 !important;
-    font-weight: bold;
-}
-::placeholder {
-    color: #19B2D6 !important;
-    opacity: 0.7;
-}
 .stTextInput > div > div > input {
     background-color: #ffffff;
     border: 2px solid #19B2D6;
     border-radius: 5px;
     padding: 15px;
-    caret-color: #19B2D6;
-}
-.stButton button {
-    background-color: #F8CF39;
-    color: #19B2D6;
-    border-radius: 10px;
+    color: #19B2D6 !important;
     font-weight: bold;
-    padding: 0.5em 1em;
-    border: none;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    caret-color: #19B2D6;
 }
 .footer {
     position: fixed;
@@ -64,14 +49,6 @@ input[type="text"], textarea {
     padding: 10px 0;
     z-index: 100;
 }
-.input-label {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    display: block;
-    margin-top: 11px;
-}
 .stTextInput {
     position: fixed;
     bottom: 50px;
@@ -79,16 +56,6 @@ input[type="text"], textarea {
     transform: translateX(-50%);
     width: 80%;
     z-index: 999;
-}
-@media (max-width: 768px) {
-  .block-container {
-    padding-bottom: 20vh !important;
-  }
-}
-@media (min-width: 769px) {
-  .block-container {
-    padding-bottom: 10vh !important;
-  }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -103,25 +70,27 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Input label above chatbox
+# Input label
 st.markdown(
     "<div style='text-align: center; font-size: 24px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
     unsafe_allow_html=True
 )
 
-# Initialize chat history
+# Init session state
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
 
-# Text input with session key
-prompt = st.text_input("", key="user_input")
+if "temp_input" not in st.session_state:
+    st.session_state.temp_input = ""
 
-# Generate response
-if st.session_state.user_input:
-    user_msg = st.session_state.user_input
-    st.session_state.messages.append({"role": "user", "content": user_msg})
+# Input field
+user_input = st.text_input("", value=st.session_state.temp_input, key="chat_input")
+
+# Handle submit
+if user_input:
+    st.session_state.messages.append({"role": "user", "content": user_input})
 
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
@@ -131,11 +100,12 @@ if st.session_state.user_input:
         reply = response.choices[0].message.content
         st.session_state.messages.append({"role": "assistant", "content": reply})
 
-    # Clear input safely
-    st.session_state.user_input = ""
-    st.rerun()  # 🔑 forces UI to refresh without error
+    # Clear safely
+    st.session_state.chat_input = ""   # resets widget
+    st.session_state.temp_input = ""   # resets backup
+    st.rerun()
 
-# Display conversation
+# Show conversation
 if len(st.session_state.messages) > 1:
     st.markdown("""
     <div id="response-container" style="
