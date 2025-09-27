@@ -42,32 +42,15 @@ st.markdown(
         border: 2px solid #19B2D6;
         border-radius: 5px;
         padding: 15px;
-    }
-    .stButton button {
-        background-color: #F8CF39;
-        color: #19B2D6;
-        border-radius: 10px;
+        color: #19B2D6 !important;
         font-weight: bold;
-        padding: 0.5em 1em;
-        border: none;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        caret-color: #19B2D6;
+        animation: blink-caret 1s step-end infinite;
     }
-    /* Blinking cursor effect inside text input */
-.stTextInput > div > div > input {
-    background-color: #ffffff;
-    border: 2px solid #19B2D6;
-    border-radius: 5px;
-    padding: 15px;
-    color: #19B2D6 !important;
-    font-weight: bold;
-    caret-color: #19B2D6; /* make caret match brand color */
-    animation: blink-caret 1s step-end infinite;
-}
-
-@keyframes blink-caret {
-    from, to { caret-color: transparent; }
-    50% { caret-color: #19B2D6; }
-}
+    @keyframes blink-caret {
+        from, to { caret-color: transparent; }
+        50% { caret-color: #19B2D6; }
+    }
     .footer {
         position: fixed;
         bottom: 0;
@@ -97,30 +80,21 @@ st.markdown(
         width: 80%;
         z-index: 999;
     }
-    /* Blinking caret animation */
-    @keyframes blink-caret {
-        0%, 100% { border-right: 0.15em solid transparent; }
-        50% { border-right: 0.15em solid rgba(25, 178, 214, 1.0); }
-    }
-    .blinking-textarea::after {
-        content: '';
-        display: inline-block;
-        width: 0;
-        height: 1em;
-        animation: blink-caret 1s step-end infinite;
-    }
     /* Avoid overlap between chat and fixed elements */
     @media (max-width: 768px) {
-  .block-container {
-    padding-bottom: 20vh !important;  /* mobile devices */
-  }
-}
-
-@media (min-width: 769px) {
-  .block-container {
-    padding-bottom: 10vh !important;  /* desktops/laptops */
-  }
-}
+      .block-container {
+        padding-bottom: 20vh !important;
+      }
+    }
+    @media (min-width: 769px) {
+      .block-container {
+        padding-bottom: 10vh !important;
+      }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Logo + subtitle
 st.markdown(
@@ -164,8 +138,8 @@ if prompt:
 # Display conversation
 if len(st.session_state.messages) > 1:
     st.markdown(
-    """
-        <div id="response-container">
+        """
+        <div id="response-container" style="
             max-height: 300px;
             overflow-y: auto;
             background-color: rgba(255, 255, 255, 0.1);
