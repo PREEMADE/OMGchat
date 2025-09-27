@@ -133,7 +133,7 @@ st.text_input("", key="chat_input", on_change=submit_message)
 if len(st.session_state.messages) > 1:
     st.markdown('<div id="response-container">', unsafe_allow_html=True)
     for msg in st.session_state.messages[1:]:
-        speaker = "**You:**" if msg["role"] == "user" else "**Companion:**"
+        speaker = "**You:**" if msg["role"] == "user" else "**Mompanion:**"
         st.markdown(f"{speaker} {msg['content']}")
     st.markdown('</div>', unsafe_allow_html=True)
 
