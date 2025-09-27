@@ -58,11 +58,11 @@ h1, h2, h3, p {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: transparent;
+    background-color: #19B2D6; /* ✅ solid brand blue */
     text-align: center;
     font-size: 0.9em;
     color: white;
-    padding: 10px 0;
+    padding: 12px 0;
     z-index: 100;
 }
 /* Chat container */
@@ -76,8 +76,8 @@ h1, h2, h3, p {
 }
 /* Chat bubbles */
 .user-bubble {
-    background-color: #F8CF39;
-    color: #19B2D6;
+    background-color: #F8CF39; /* gold bubble */
+    color: white; /* ✅ white text for contrast */
     padding: 10px 14px;
     border-radius: 16px;
     margin: 5px 0;
@@ -89,7 +89,7 @@ h1, h2, h3, p {
 }
 .companion-bubble {
     background-color: white;
-    color: #19B2D6;
+    color: #19B2D6; /* ✅ brand blue text */
     padding: 10px 14px;
     border-radius: 16px;
     margin: 5px 0;
