@@ -110,13 +110,17 @@ st.markdown(
         animation: blink-caret 1s step-end infinite;
     }
     /* Avoid overlap between chat and fixed elements */
-    .block-container {
-        padding-bottom: 120px !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+    @media (max-width: 768px) {
+  .block-container {
+    padding-bottom: 20vh !important;  /* mobile devices */
+  }
+}
+
+@media (min-width: 769px) {
+  .block-container {
+    padding-bottom: 10vh !important;  /* desktops/laptops */
+  }
+}
 
 # Logo + subtitle
 st.markdown(
