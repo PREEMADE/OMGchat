@@ -52,6 +52,22 @@ st.markdown(
         border: none;
         box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     }
+    /* Blinking cursor effect inside text input */
+.stTextInput > div > div > input {
+    background-color: #ffffff;
+    border: 2px solid #19B2D6;
+    border-radius: 5px;
+    padding: 15px;
+    color: #19B2D6 !important;
+    font-weight: bold;
+    caret-color: #19B2D6; /* make caret match brand color */
+    animation: blink-caret 1s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to { caret-color: transparent; }
+    50% { caret-color: #19B2D6; }
+}
     .footer {
         position: fixed;
         bottom: 0;
