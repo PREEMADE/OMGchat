@@ -184,7 +184,7 @@ st.markdown("""
 
     /* Make sure chat content doesn’t overlap with footer */
     .block-container {
-        padding-bottom: 60px !important;
+        padding-top: 60px !important;
     }
     </style>
 
