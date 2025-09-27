@@ -164,7 +164,8 @@ if prompt:
 # Display conversation
 if len(st.session_state.messages) > 1:
     st.markdown(
-        <div id="response-container" style="
+    """
+        <div id="response-container">
             max-height: 300px;
             overflow-y: auto;
             background-color: rgba(255, 255, 255, 0.1);
