@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import datetime
 
 # 🔑 Secure API key
 openai.api_key = st.secrets["OPENAI_API_KEY"]
@@ -66,12 +67,51 @@ h1, h2, h3, p {
 }
 /* Chat container */
 #response-container {
-    max-height: 300px;
+    max-height: 350px;
     overflow-y: auto;
     background-color: rgba(255, 255, 255, 0.1);
     padding: 15px;
     border-radius: 10px;
     margin-top: 20px;
+}
+/* Chat bubbles */
+.user-bubble {
+    background-color: #F8CF39;
+    color: #19B2D6;
+    padding: 10px 14px;
+    border-radius: 16px;
+    margin: 5px 0;
+    text-align: right;
+    max-width: 70%;
+    float: right;
+    clear: both;
+    font-weight: 500;
+}
+.companion-bubble {
+    background-color: white;
+    color: #19B2D6;
+    padding: 10px 14px;
+    border-radius: 16px;
+    margin: 5px 0;
+    text-align: left;
+    max-width: 70%;
+    float: left;
+    clear: both;
+    font-weight: 500;
+}
+.timestamp {
+    font-size: 0.75em;
+    color: gray;
+    display: block;
+    margin-top: 3px;
+}
+.new-message {
+    border: 2px solid #F8CF39;
+    animation: fadeIn 1s ease-in-out;
+}
+@keyframes fadeIn {
+    from { background-color: #F8CF39; }
+    to { background-color: white; }
 }
 /* Responsive spacing */
 @media (max-width: 768px) {
@@ -105,16 +145,16 @@ if "messages" not in st.session_state:
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
 
-# 🚀 Callback function to handle submission
+# 🚀 Callback function
 def submit_message():
     user_message = st.session_state.chat_input
     if user_message.strip() == "":
         return
 
-    # Store user msg
+    # Add user message
     st.session_state.messages.append({"role": "user", "content": user_message})
 
-    # Get reply
+    # AI reply
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -123,13 +163,11 @@ def submit_message():
         reply = response.choices[0].message.content
         st.session_state.messages.append({"role": "assistant", "content": reply})
 
-    # Clear input after send
+    # Clear input
     st.session_state.chat_input = ""
 
 # 📝 Input field with callback
 st.text_input("", key="chat_input", on_change=submit_message)
-
-import datetime
 
 # 📜 Display conversation
 if len(st.session_state.messages) > 1:
@@ -143,7 +181,7 @@ if len(st.session_state.messages) > 1:
                 unsafe_allow_html=True
             )
         else:
-            # Highlight only the latest assistant message
+            # Highlight latest assistant message
             bubble_class = "companion-bubble new-message" if i == len(st.session_state.messages[1:]) - 1 else "companion-bubble"
             st.markdown(
                 f"<div class='{bubble_class}'>{msg['content']}<span class='timestamp'>{timestamp}</span></div>",
