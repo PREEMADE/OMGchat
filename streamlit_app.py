@@ -93,25 +93,22 @@ st.markdown("""
         width: 80%; /* make it wide */
         z-index: 999;
     }
-st.markdown("""
+st.markdown(
+    """
     <style>
     /* Reduce space below the title */
     h1 {
         margin-bottom: 10px !important;  /* default is usually ~20–30px */
     }
+
     /* Reduce space between text input and elements above */
     .stTextInput {
         margin-top: -5px !important;  /* pull it closer */
     }
     </style>
-""", unsafe_allow_html=True)
-
-    /* Add some padding to bottom so messages don’t get covered */
-    .block-container {
-        padding-bottom: 100px !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown(
     """
