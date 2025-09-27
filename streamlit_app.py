@@ -99,6 +99,7 @@ st.markdown("""
     h1 {
         margin-bottom: 10px !important;  /* default is usually ~20–30px */
     }
+
     /* Reduce space between text input and elements above */
     .stTextInput {
         margin-top: -5px !important;  /* pull it closer */
