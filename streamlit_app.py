@@ -6,14 +6,15 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Page configuration
 st.set_page_config(
-    page_title="",
-    page_icon="",
+    page_title="Mompanion",
+    page_icon="💬",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
 # Inject CSS styling
-st.markdown("""
+st.markdown(
+    """
     <style>
     .stApp {
         background-color: #19B2D6;
@@ -52,10 +53,16 @@ st.markdown("""
         box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     }
     .footer {
-        margin-top: 50px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: transparent;
         text-align: center;
         font-size: 0.9em;
         color: white;
+        padding: 10px 0;
+        z-index: 100;
     }
     .input-label {
         font-size: 1.3em;
@@ -65,43 +72,20 @@ st.markdown("""
         display: block;
         margin-top: 11px;
     }
-    </style>
-""", unsafe_allow_html=True)
-
-# Display logo
-st.markdown("""
-<div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
-        <img src="https://i.imgur.com/iGDWGBX.png" width="222" style="margin-bottom: 5px;"/>
-        <p style="margin-top: 20px; color: white; font-size: 18px; text-align: center;">
-            A safe space to navigate feelings and mom guilt. Powered by OMG.
-        </p>
-    </div>
-""", unsafe_allow_html=True)
-
-st.markdown(
-    "<div style='text-align: center; font-size: 24px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
-    unsafe_allow_html=True
-)
-st.markdown("""
-    <style>
-    /* Container for the chat input */
+    /* Sticky input at bottom */
     .stTextInput {
         position: fixed;
-        bottom: 20px; /* distance from bottom */
+        bottom: 50px; /* leave space above footer */
         left: 50%;
         transform: translateX(-50%);
-        width: 80%; /* make it wide */
+        width: 80%;
         z-index: 999;
     }
-
-st.markdown(
-    """
-    <style>
+    /* Blinking caret animation */
     @keyframes blink-caret {
-        50%, 100% { border-right: 0.15em solid rgba(25, 178, 214, 1.0); }
+        0%, 100% { border-right: 0.15em solid transparent; }
         50% { border-right: 0.15em solid rgba(25, 178, 214, 1.0); }
     }
-
     .blinking-textarea::after {
         content: '';
         display: inline-block;
@@ -109,8 +93,31 @@ st.markdown(
         height: 1em;
         animation: blink-caret 1s step-end infinite;
     }
+    /* Avoid overlap between chat and fixed elements */
+    .block-container {
+        padding-bottom: 120px !important;
+    }
     </style>
     """,
+    unsafe_allow_html=True
+)
+
+# Logo + subtitle
+st.markdown(
+    """
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+        <img src="https://i.imgur.com/iGDWGBX.png" width="222" style="margin-bottom: 5px;"/>
+        <p style="margin-top: 20px; color: white; font-size: 18px; text-align: center;">
+            A safe space to navigate feelings and mom guilt. Powered by OMG.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Input label above chatbox
+st.markdown(
+    "<div style='text-align: center; font-size: 24px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
     unsafe_allow_html=True
 )
 
@@ -119,7 +126,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
-# Input prompt
+
+# Input prompt (empty label because we show custom above)
 prompt = st.text_input("")
 
 # Generate response
@@ -135,53 +143,42 @@ if prompt:
 
 # Display conversation
 if len(st.session_state.messages) > 1:
-    st.markdown("""
-    <div id="response-container" style="
-        max-height: 300px;
-        overflow-y: auto;
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 20px;
-    ">
-    """, unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div id="response-container" style="
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        ">
+        """,
+        unsafe_allow_html=True
+    )
     for msg in st.session_state.messages[1:]:
         speaker = "**You:**" if msg["role"] == "user" else "**Companion:**"
         st.markdown(f"{speaker} {msg['content']}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("""
+    st.markdown(
+        """
         <script>
         const container = document.getElementById('response-container');
         if (container) {
             container.scrollTop = container.scrollHeight;
         }
         </script>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
-# Sticky Footer
-st.markdown("""
-    <style>
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: transparent;
-        text-align: center;
-        font-size: 0.9em;
-        color: white;
-        padding: 10px 0;
-        z-index: 100;
-    }
-
-    /* Make sure chat content doesn’t overlap with footer */
-    .block-container {
-        padding-top: 60px !important;
-    }
-    </style>
-
+# Footer
+st.markdown(
+    """
     <div class="footer">
         💕 Built with love by the OMG Team | 🌟 Mom Guilt Companion © 2025
     </div>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
