@@ -41,7 +41,7 @@ input[type="text"], textarea {
     border: 2px solid #19B2D6;
     border-radius: 5px;
     padding: 15px;
-    caret-color: #19B2D6; /* custom blinking cursor color */
+    caret-color: #19B2D6;
 }
 .stButton button {
     background-color: #F8CF39;
@@ -72,16 +72,14 @@ input[type="text"], textarea {
     display: block;
     margin-top: 11px;
 }
-/* Sticky input at bottom */
 .stTextInput {
     position: fixed;
-    bottom: 50px; /* leave space above footer */
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
     width: 80%;
     z-index: 999;
 }
-/* Responsive padding so content isn't hidden behind footer/input */
 @media (max-width: 768px) {
   .block-container {
     padding-bottom: 20vh !important;
@@ -117,12 +115,14 @@ if "messages" not in st.session_state:
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
 
-# Input with key so we can reset it
+# Text input with session key
 prompt = st.text_input("", key="user_input")
 
 # Generate response
-if prompt:
-    st.session_state.messages.append({"role": "user", "content": prompt})
+if st.session_state.user_input:
+    user_msg = st.session_state.user_input
+    st.session_state.messages.append({"role": "user", "content": user_msg})
+
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -130,8 +130,10 @@ if prompt:
         )
         reply = response.choices[0].message.content
         st.session_state.messages.append({"role": "assistant", "content": reply})
-    # Clear input after submission
+
+    # Clear input safely
     st.session_state.user_input = ""
+    st.rerun()  # 🔑 forces UI to refresh without error
 
 # Display conversation
 if len(st.session_state.messages) > 1:
@@ -149,15 +151,6 @@ if len(st.session_state.messages) > 1:
         speaker = "**You:**" if msg["role"] == "user" else "**Companion:**"
         st.markdown(f"{speaker} {msg['content']}")
     st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("""
-    <script>
-    const container = document.getElementById('response-container');
-    if (container) {
-        container.scrollTop = container.scrollHeight;
-    }
-    </script>
-    """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
