@@ -20,6 +20,18 @@ st.markdown("""
     background-color: #19B2D6;
     font-family: 'Helvetica Neue', sans-serif;
 }
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #19B2D6;
+        font-family: 'Helvetica Neue', sans-serif;
+    }
+    ...
+    .assistant-bubble ol, .assistant-bubble ul, .assistant-bubble li {
+        color: #000000 !important;  /* visible list text */
+    }
+    </style>
+""", unsafe_allow_html=True)
 h1, h2, h3, p {
     text-align: center !important;
     color: white;
