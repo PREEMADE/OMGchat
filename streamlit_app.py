@@ -125,7 +125,7 @@ if chat_input:
         reply = response.choices[0].message.content
         st.session_state.messages.append({"role": "assistant", "content": reply})
     # Clear input safely
-    st.session_state["chat_input"] = ""
+    st.session_state[chat_input] = ""
 
 # Display conversation
 for i, msg in enumerate(st.session_state.messages[1:]):  # skip system prompt
