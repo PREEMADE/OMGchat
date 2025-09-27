@@ -23,28 +23,43 @@ st.markdown("""
 h1, h2, h3, p {
     text-align: center !important;
     color: white;
-}
+# Custom CSS for chat bubbles
+st.markdown("""
+<style>
 .user-bubble {
     background-color: #F8CF39;
-    color: #000;
+    color: #000000;
     padding: 10px 15px;
-    border-radius: 15px;
+    border-radius: 12px;
     margin: 5px;
-    max-width: 75%;
-    text-align: right;
-    align-self: flex-end;
+    max-width: 70%;
+    float: right;
+    clear: both;
 }
 .assistant-bubble {
-    background-color: #fff;
+    background-color: #ffffff;
     color: #19B2D6;
     padding: 10px 15px;
-    border-radius: 15px;
+    border-radius: 12px;
     margin: 5px;
-    max-width: 75%;
-    text-align: left;
-    align-self: flex-start;
-    border: 2px solid #F8CF39;
+    max-width: 70%;
+    float: left;
+    clear: both;
 }
+/* Fix list numbers in assistant bubbles */
+.assistant-bubble ol, .assistant-bubble ul, .assistant-bubble li {
+    color: #19B2D6 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Conversation display (staggered)
+for msg in st.session_state.messages[1:]:
+    if msg["role"] == "user":
+        st.markdown(f"<div class='user-bubble'>{msg['content']}</div>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<div class='assistant-bubble'>{msg['content']}</div>", unsafe_allow_html=True)
+
 #response-container {
     display: flex;
     flex-direction: column;
