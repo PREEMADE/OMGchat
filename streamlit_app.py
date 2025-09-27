@@ -166,9 +166,29 @@ if len(st.session_state.messages) > 1:
         </script>
     """, unsafe_allow_html=True)
 
-# Footer
+# Sticky Footer
 st.markdown("""
-<div class="footer">
-    💕 Built with love by the OMG Team | 🌟 Mom Guilt Companion © 2025
-</div>
+    <style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: transparent;
+        text-align: center;
+        font-size: 0.9em;
+        color: white;
+        padding: 10px 0;
+        z-index: 100;
+    }
+
+    /* Make sure chat content doesn’t overlap with footer */
+    .block-container {
+        padding-bottom: 60px !important;
+    }
+    </style>
+
+    <div class="footer">
+        💕 Built with love by the OMG Team | 🌟 Mom Guilt Companion © 2025
+    </div>
 """, unsafe_allow_html=True)
