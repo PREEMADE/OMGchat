@@ -2,10 +2,10 @@ import streamlit as st
 import openai
 from datetime import datetime
 
-# Set OpenAI API key securely
+# Secure API key
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Page configuration
+# Page config
 st.set_page_config(
     page_title="Mompanion",
     page_icon="💬",
@@ -13,119 +13,104 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Inject CSS styling
+# CSS Styling
+st.markdown("""
+<style>
+.stApp {
+    background-color: #19B2D6;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+h1, h2, h3, p {
+    text-align: center !important;
+    color: white;
+}
+.user-bubble {
+    background-color: #F8CF39;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin: 5px;
+    max-width: 75%;
+    text-align: right;
+    align-self: flex-end;
+}
+.assistant-bubble {
+    background-color: #fff;
+    color: #19B2D6;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin: 5px;
+    max-width: 75%;
+    text-align: left;
+    align-self: flex-start;
+    border: 2px solid #F8CF39;
+}
+#response-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.divider {
+    text-align: center;
+    color: white;
+    margin: 15px 0;
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #19B2D6;
+    text-align: center;
+    font-size: 0.9em;
+    color: white;
+    padding: 10px 0;
+    z-index: 100;
+    border-top: 2px solid white;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Header
+st.markdown("""
+<div style="display:flex; flex-direction:column; align-items:center; margin-bottom:10px;">
+    <img src="https://i.imgur.com/iGDWGBX.png" width="222" style="margin-bottom:5px;"/>
+    <p style="margin-top:20px; color:white; font-size:18px; text-align:center;">
+        A safe space to navigate feelings and mom guilt. Powered by OMG.
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: #19B2D6;
-        font-family: 'Helvetica Neue', sans-serif;
-    }
-    h1, h2, h3, p {
-        text-align: center !important;
-        color: white;
-    }
-    .logo {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 0px;
-    }
-    /* Input box */
-    .stTextInput > div > div > input {
-        background-color: #ffffff;
-        border: 2px solid #19B2D6;
-        border-radius: 8px;
-        padding: 12px;
-        font-weight: bold;
-        color: #19B2D6 !important; /* brand blue text */
-    }
-    ::placeholder {
-        color: #19B2D6 !important;
-        opacity: 0.7;
-    }
-    /* Chat bubbles */
-    .user-bubble {
-        background-color: #F8CF39;
-        color: #000;
-        padding: 10px 15px;
-        border-radius: 15px;
-        margin: 5px;
-        max-width: 75%;
-        align-self: flex-end;
-        text-align: right;
-    }
-    .assistant-bubble {
-        background-color: #fff;
-        color: #19B2D6;
-        padding: 10px 15px;
-        border-radius: 15px;
-        margin: 5px;
-        max-width: 75%;
-        align-self: flex-start;
-        text-align: left;
-        border: 2px solid #F8CF39;
-    }
-    /* Chat container */
-    #response-container {
-        display: flex;
-        flex-direction: column;
-        max-height: 400px;
-        overflow-y: auto;
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 20px;
-    }
-    /* Footer solid */
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #19B2D6;
-        text-align: center;
-        font-size: 0.9em;
-        color: white;
-        padding: 10px 0;
-        z-index: 100;
-        border-top: 2px solid white;
-    }
-    </style>
-    """,
+    "<div style='text-align:center; font-size:22px; font-weight:bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
     unsafe_allow_html=True
 )
 
-# Logo + subtitle
-st.markdown(
-    """
-    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
-        <img src="https://i.imgur.com/iGDWGBX.png" width="222" style="margin-bottom: 5px;"/>
-        <p style="margin-top: 20px; color: white; font-size: 18px; text-align: center;">
-            A safe space to navigate feelings and mom guilt. Powered by OMG.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-# Input label
-st.markdown(
-    "<div style='text-align: center; font-size: 22px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
-    unsafe_allow_html=True
-)
-
-# Initialize chat history
+# Initialize session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "divider_shown" not in st.session_state:
+    st.session_state.divider_shown = False
 
-# Input box
-user_input = st.text_input("Type your message here...", key="chat_input")
+# Input with dynamic key to auto-clear
+user_input = st.text_input("Type your message here...", key=f"chat_input_{len(st.session_state.messages)}")
 
-# When user submits
 if user_input:
-    st.session_state.messages.append(
-        {"role": "user", "content": user_input, "time": datetime.now().strftime("%H:%M")}
-    )
+    # Save user message
+    st.session_state.messages.append({
+        "role": "user",
+        "content": user_input,
+        "time": datetime.now().strftime("%H:%M")
+    })
+
+    # Get assistant reply
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -133,26 +118,34 @@ if user_input:
             + [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
         )
         reply = response.choices[0].message.content
-        st.session_state.messages.append(
-            {"role": "assistant", "content": reply, "time": datetime.now().strftime("%H:%M")}
-        )
-    # Clear input safely
-    if "chat_input" in st.session_state:
-        st.session_state["chat_input"] = ""
 
-# Chat display
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": reply,
+        "time": datetime.now().strftime("%H:%M")
+    })
+
+    # Mark divider so new messages are visible
+    st.session_state.divider_shown = True
+
+# Show conversation
 if st.session_state.messages:
-    st.markdown('<div id="response-container">', unsafe_allow_html=True)
+    st.markdown("<div id='response-container'>", unsafe_allow_html=True)
+
+    # If divider flag set, show line between old and new
+    if st.session_state.divider_shown:
+        st.markdown("<div class='divider'>─── New Messages ───</div>", unsafe_allow_html=True)
+
     for msg in st.session_state.messages:
         if msg["role"] == "user":
             st.markdown(
-                f"<div class='user-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>",
-                unsafe_allow_html=True,
+                f"<div class='user-bubble'>{msg.get('content','')}<br><small>{msg.get('time','')}</small></div>",
+                unsafe_allow_html=True
             )
         else:
             st.markdown(
-                f"<div class='assistant-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>",
-                unsafe_allow_html=True,
+                f"<div class='assistant-bubble'>{msg.get('content','')}<br><small>{msg.get('time','')}</small></div>",
+                unsafe_allow_html=True
             )
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -164,15 +157,12 @@ if st.session_state.messages:
         if (container) { container.scrollTop = container.scrollHeight; }
         </script>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
 
 # Footer
-st.markdown(
-    """
-    <div class="footer">
-        💕 Built with love by the OMG Team | 🌟 Mom Guilt Companion © 2025
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div class="footer">
+    💕 Built with love by the OMG Team | 🌟 Mom Guilt Companion © 2025
+</div>
+""", unsafe_allow_html=True)
