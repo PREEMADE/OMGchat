@@ -2,10 +2,10 @@ import streamlit as st
 import openai
 from datetime import datetime
 
-# 🔑 Set OpenAI API key securely
+# 🔑 OpenAI API key
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# ⚙️ Page configuration
+# ⚙️ Page config
 st.set_page_config(
     page_title="Mompanion",
     page_icon="💬",
@@ -26,7 +26,7 @@ st.markdown(
         color: white;
     }
 
-    /* User + Assistant chat bubbles */
+    /* Chat bubbles */
     .user-bubble {
         background-color: #F8CF39;
         color: black;
@@ -48,20 +48,22 @@ st.markdown(
         clear: both;
     }
 
-    /* Fix list visibility inside assistant bubbles */
+    /* Make lists inside bubbles visible */
     .assistant-bubble ul, .assistant-bubble ol {
         color: #19B2D6 !important;
         margin-left: 20px;
     }
 
-    /* Pinned chat input */
-    .stTextInput {
+    /* Fixed input row */
+    .input-row {
         position: fixed;
-        bottom: 60px;  /* sits above footer */
+        bottom: 60px;
         left: 50%;
         transform: translateX(-50%);
         width: 80%;
         z-index: 999;
+        display: flex;
+        gap: 10px;
     }
     .stTextInput > div > div > input {
         background-color: #ffffff;
@@ -70,10 +72,21 @@ st.markdown(
         padding: 12px;
         color: #19B2D6 !important;
         font-weight: bold;
-        caret-color: #19B2D6; /* blinking caret in brand blue */
+        caret-color: #19B2D6;
+        width: 100%;
+    }
+    .stButton > button {
+        background-color: #F8CF39;
+        color: #19B2D6;
+        border-radius: 8px;
+        font-weight: bold;
+        padding: 0.6em 1em;
+        border: none;
+        cursor: pointer;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     }
 
-    /* Solid footer */
+    /* Footer */
     .footer {
         position: fixed;
         bottom: 0;
@@ -87,19 +100,20 @@ st.markdown(
         z-index: 1000;
     }
 
-    /* Divider between conversations */
+    /* Divider */
     .divider {
         text-align: center;
         margin: 20px 0;
         color: white;
         font-size: 0.8em;
+        clear: both;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# 🖼️ Logo and tagline
+# 🖼️ Logo
 st.markdown(
     """
     <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
@@ -118,25 +132,30 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📝 Initialize session state
+# 📝 Session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "last_date" not in st.session_state:
     st.session_state.last_date = None
+if "chat_input" not in st.session_state:
+    st.session_state.chat_input = ""  # <-- store text here
 
-# ⌨️ Chat input
-user_input = st.text_input("Type your message here...")
+# 📥 Input row (Text + Button)
+with st.container():
+    cols = st.columns([5, 1])  # ratio: input takes 5 parts, button 1 part
+    with cols[0]:
+        user_input = st.text_input("Type your message here...", key="chat_input", label_visibility="collapsed")
+    with cols[1]:
+        send_clicked = st.button("Send")
 
 # 🚀 Handle new message
-if user_input:
-    # Append user message
+if (user_input and send_clicked) or (user_input and not send_clicked and st.session_state.chat_input != ""):
     st.session_state.messages.append({
         "role": "user",
         "content": user_input,
         "time": datetime.now().strftime("%H:%M")
     })
 
-    # Get AI response
     with st.spinner("Thinking..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -150,21 +169,23 @@ if user_input:
         "time": datetime.now().strftime("%H:%M")
     })
 
-    # Clear input safely by rerunning
+    # ✅ Clear text input after sending
+    st.session_state.chat_input = ""
     st.experimental_rerun()
 
-# 🖼️ Chat history display
-for msg in st.session_state.messages:
-    # Divider by date
-    current_date = datetime.now().strftime("%A, %B %d")
-    if st.session_state.last_date != current_date:
-        st.markdown(f"<div class='divider'>{current_date}</div>", unsafe_allow_html=True)
-        st.session_state.last_date = current_date
+# 📜 Chat history
+chat_container = st.container()
+with chat_container:
+    for msg in st.session_state.messages:
+        current_date = datetime.now().strftime("%A, %B %d")
+        if st.session_state.last_date != current_date:
+            st.markdown(f"<div class='divider'>{current_date}</div>", unsafe_allow_html=True)
+            st.session_state.last_date = current_date
 
-    if msg["role"] == "user":
-        st.markdown(f"<div class='user-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<div class='assistant-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
+        if msg["role"] == "user":
+            st.markdown(f"<div class='user-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<div class='assistant-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
 
 # 📌 Footer
 st.markdown(
