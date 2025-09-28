@@ -100,7 +100,7 @@ st.markdown("""
 /* Keep chat input fixed above footer */
 .stTextInput {
     position: fixed;
-    bottom: 0px; /* leaves room for footer */
+    bottom/* leaves room for footer */
     left: 50%;
     transform: translateX(-50%);
     width: 80%;  /* adjust width as you like */
