@@ -47,16 +47,15 @@ st.markdown(
         float: left;
         clear: both;
     }
-
     .assistant-bubble ul, .assistant-bubble ol {
         color: #19B2D6 !important;
         margin-left: 20px;
     }
 
-    /* Fixed input row at very bottom */
+    /* Input row pinned at bottom */
     .input-row {
         position: fixed;
-        bottom: 55px; /* leave space for footer */
+        bottom: 55px; /* sits just above footer */
         left: 50%;
         transform: translateX(-50%);
         width: 90%;
@@ -134,21 +133,20 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "last_date" not in st.session_state:
     st.session_state.last_date = None
-if "chat_input" not in st.session_state:
-    st.session_state.chat_input = ""
+if "chat_box" not in st.session_state:
+    st.session_state.chat_box = ""
 
-# 📥 Input row (pinned to bottom)
-with st.container():
-    st.markdown("<div class='input-row'>", unsafe_allow_html=True)
-    cols = st.columns([6, 1])  
-    with cols[0]:
-        user_input = st.text_input("Type your message here...", key="chat_input", label_visibility="collapsed")
-    with cols[1]:
-        send_clicked = st.button("Send")
-    st.markdown("</div>", unsafe_allow_html=True)
+# 📥 Input row (fixed at bottom)
+st.markdown("<div class='input-row'>", unsafe_allow_html=True)
+cols = st.columns([6, 1])
+with cols[0]:
+    user_input = st.text_input("Type your message here...", key="chat_box", label_visibility="collapsed")
+with cols[1]:
+    send_clicked = st.button("Send")
+st.markdown("</div>", unsafe_allow_html=True)
 
 # 🚀 Handle new message
-if (user_input and send_clicked) or (user_input and not send_clicked):
+if (user_input and send_clicked):
     st.session_state.messages.append({
         "role": "user",
         "content": user_input,
@@ -168,7 +166,7 @@ if (user_input and send_clicked) or (user_input and not send_clicked):
         "time": datetime.now().strftime("%H:%M")
     })
 
-    st.session_state.chat_input = ""
+    st.session_state["chat_box"] = ""  # ✅ safely clear input
     st.experimental_rerun()
 
 # 📜 Chat history
