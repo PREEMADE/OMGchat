@@ -97,6 +97,16 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+/* Keep chat input fixed above footer */
+.stTextInput {
+    position: fixed;
+    bottom: 60px; /* leaves room for footer */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;  /* adjust width as you like */
+    z-index: 999;
+}
+
 st.markdown(
     "<div style='text-align: center; font-size: 22px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
     unsafe_allow_html=True
