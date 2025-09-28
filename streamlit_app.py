@@ -48,22 +48,21 @@ st.markdown(
         clear: both;
     }
 
-    /* Make lists inside bubbles visible */
     .assistant-bubble ul, .assistant-bubble ol {
         color: #19B2D6 !important;
         margin-left: 20px;
     }
 
-    /* Fixed input row */
+    /* Fixed input row at very bottom */
     .input-row {
         position: fixed;
-        bottom: 60px;
+        bottom: 55px; /* leave space for footer */
         left: 50%;
         transform: translateX(-50%);
-        width: 80%;
+        width: 90%;
         z-index: 999;
         display: flex;
-        gap: 10px;
+        gap: 8px;
     }
     .stTextInput > div > div > input {
         background-color: #ffffff;
@@ -100,7 +99,6 @@ st.markdown(
         z-index: 1000;
     }
 
-    /* Divider */
     .divider {
         text-align: center;
         margin: 20px 0;
@@ -126,9 +124,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 💬 Title
 st.markdown(
-    "<div style='text-align: center; font-size: 22px; font-weight: bold;'>What's on your mind today? (mom guilt, stress, doubts, anything)</div>",
+    "<div style='text-align: center; font-size: 22px; font-weight: bold;'>What's on your mind today?</div>",
     unsafe_allow_html=True,
 )
 
@@ -138,18 +135,20 @@ if "messages" not in st.session_state:
 if "last_date" not in st.session_state:
     st.session_state.last_date = None
 if "chat_input" not in st.session_state:
-    st.session_state.chat_input = ""  # <-- store text here
+    st.session_state.chat_input = ""
 
-# 📥 Input row (Text + Button)
+# 📥 Input row (pinned to bottom)
 with st.container():
-    cols = st.columns([5, 1])  # ratio: input takes 5 parts, button 1 part
+    st.markdown("<div class='input-row'>", unsafe_allow_html=True)
+    cols = st.columns([6, 1])  
     with cols[0]:
         user_input = st.text_input("Type your message here...", key="chat_input", label_visibility="collapsed")
     with cols[1]:
         send_clicked = st.button("Send")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # 🚀 Handle new message
-if (user_input and send_clicked) or (user_input and not send_clicked and st.session_state.chat_input != ""):
+if (user_input and send_clicked) or (user_input and not send_clicked):
     st.session_state.messages.append({
         "role": "user",
         "content": user_input,
@@ -169,7 +168,6 @@ if (user_input and send_clicked) or (user_input and not send_clicked and st.sess
         "time": datetime.now().strftime("%H:%M")
     })
 
-    # ✅ Clear text input after sending
     st.session_state.chat_input = ""
     st.experimental_rerun()
 
