@@ -121,20 +121,30 @@ with st.container():
         value=st.session_state.get("chat_input", ""),
         label_visibility="collapsed"
     )
+# Input text pinned at bottom
+user_input = st.text_input(
+    "Type your message here...",
+    key="chat_input",
+    value=st.session_state.get("chat_input", ""),
+    label_visibility="collapsed"
+)
 
-    if user_input:
-        st.session_state.messages.append({"role": "user", "content": user_input})
+# Handle submission
+if user_input:
+    # Save user message
+    st.session_state.messages.append({"role": "user", "content": user_input})
 
-        with st.spinner("Thinking..."):
-            response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=st.session_state.messages
-            )
-            reply = response.choices[0].message.content
-            st.session_state.messages.append({"role": "assistant", "content": reply})
+    with st.spinner("Thinking..."):
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=st.session_state.messages
+        )
+        reply = response.choices[0].message.content
+        st.session_state.messages.append({"role": "assistant", "content": reply})
 
-        # Clear input properly
-        st.session_state["chat_input"] = ""
+    # Clear safely (avoid Streamlit API exception)
+    st.session_state["chat_input"] = ""
+
 
     st.markdown('</div>', unsafe_allow_html=True)
 
