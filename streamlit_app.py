@@ -147,6 +147,46 @@ if user_input:
 
 
     st.markdown('</div>', unsafe_allow_html=True)
+# Fixed input box at the bottom (WhatsApp style)
+st.markdown(
+    """
+    <style>
+    .input-container {
+        position: fixed;
+        bottom: 50px; /* adjust so it's just above your footer */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 800px;
+        background-color: white;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.15);
+        z-index: 100;
+    }
+    </style>
+    <div class="input-container">
+    """,
+    unsafe_allow_html=True
+)
+
+user_input = st.text_input("Type a message...", key="chat_input", label_visibility="collapsed")
+
+send = st.button("Send")
+
+st.markdown("</div>", unsafe_allow_html=True)
+
+if send or user_input:
+    if user_input.strip() != "":
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.spinner("Thinking..."):
+            response = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=st.session_state.messages
+            )
+        reply = response.choices[0].message.content
+        st.session_state.messages.append({"role": "assistant", "content": reply})
+        st.session_state.chat_input = ""  # clear after send
 
 # Footer
 st.markdown(
