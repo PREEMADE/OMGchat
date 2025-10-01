@@ -121,19 +121,37 @@ if "messages" not in st.session_state:
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
 
-# Input prompt (clears after submission)
-prompt = st.text_input("", key="user_input")
-if prompt:
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.spinner("Thinking..."):
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=st.session_state.messages
+# Chat input (fixed at bottom, WhatsApp-style)
+with st.container():
+    st.markdown('<div class="chat-input-container">', unsafe_allow_html=True)
+
+    # Create a form so Enter can submit
+    with st.form(key="chat_form", clear_on_submit=True):
+        user_input = st.text_area(
+            "Type your message here...",
+            key="chat_input",
+            height=50,
+            label_visibility="collapsed",
+            placeholder="Type a message...",
         )
-        reply = response.choices[0].message.content
-        st.session_state.messages.append({"role": "assistant", "content": reply})
-    # Clear text box
-    st.session_state["chat_input"] = ""
+
+        # Add a send button
+        send_pressed = st.form_submit_button("Send")
+
+    # Handle input when Enter or Send is pressed
+    if send_pressed and user_input.strip():
+        # Save user message
+        st.session_state.messages.append({"role": "user", "content": user_input})
+
+        with st.spinner("Thinking..."):
+            response = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=st.session_state.messages
+            )
+            reply = response.choices[0].message.content
+            st.session_state.messages.append({"role": "assistant", "content": reply})
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Display conversation
 if len(st.session_state.messages) > 1:
