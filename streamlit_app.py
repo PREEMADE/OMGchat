@@ -121,19 +121,60 @@ if "messages" not in st.session_state:
         {"role": "system", "content": "You are a compassionate, uplifting support companion for mothers navigating guilt, stress, or emotional overwhelm."}
     ]
 
-# Chat input (fixed at bottom, WhatsApp-style)
-with st.container():
-    st.markdown('<div class="chat-input-container">', unsafe_allow_html=True)
+## Fixed input bar at the bottom
+st.markdown(
+    """
+    <style>
+    .chat-input-container {
+        position: fixed;
+        bottom: 50px; /* sits just above footer */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 800px;
+        display: flex;
+        gap: 10px;
+        z-index: 999;
+    }
+    .chat-input-box {
+        flex: 1;
+    }
+    .send-btn {
+        background-color: #F8CF39;
+        color: #19B2D6;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        padding: 0.5em 1em;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-    # Create a form so Enter can submit
-    with st.form(key="chat_form", clear_on_submit=True):
-        user_input = st.text_area(
-            "Type your message here...",
-            key="chat_input",
-            height=50,
-            label_visibility="collapsed",
-            placeholder="Type a message...",
-        )
+# Create a container for input + send button
+chat_input_col, send_button_col = st.columns([8, 1])
+
+with chat_input_col:
+    prompt = st.text_input("Type your message here...", key="chat_input", label_visibility="collapsed")
+
+with send_button_col:
+    send_pressed = st.button("📨", key="send_button")
+
+# Process input when Enter pressed OR Send clicked
+if (prompt and prompt.strip()) or send_pressed:
+    if prompt.strip():
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.spinner("Thinking..."):
+            response = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=st.session_state.messages
+            )
+            reply = response.choices[0].message.content
+            st.session_state.messages.append({"role": "assistant", "content": reply})
+
+        # Clear input after sending
+        st.session_state["chat_input"] = ""
 
         # Add a send button
         send_pressed = st.form_submit_button("Send")
