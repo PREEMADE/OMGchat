@@ -133,7 +133,7 @@ if prompt:
         reply = response.choices[0].message.content
         st.session_state.messages.append({"role": "assistant", "content": reply})
     # Clear text box
-    st.session_state.user_input = ""
+    st.session_state["chat_input"] = ""
 
 # Display conversation
 if len(st.session_state.messages) > 1:
