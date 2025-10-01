@@ -52,39 +52,6 @@ st.markdown(
         margin-left: 20px;
     }
 
-    /* Input row pinned at absolute bottom */
-    .input-row {
-        position: fixed;
-        bottom: 50px; /* right above footer */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 95%;
-        max-width: 800px;
-        z-index: 999;
-        display: flex;
-        gap: 8px;
-    }
-    .stTextInput > div > div > input {
-        background-color: #ffffff;
-        border: 2px solid #19B2D6;
-        border-radius: 5px;
-        padding: 12px;
-        color: #19B2D6 !important;
-        font-weight: bold;
-        caret-color: #19B2D6;
-        width: 100%;
-    }
-    .stButton > button {
-        background-color: #F8CF39;
-        color: #19B2D6;
-        border-radius: 8px;
-        font-weight: bold;
-        padding: 0.6em 1em;
-        border: none;
-        cursor: pointer;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    }
-
     /* Footer */
     .footer {
         position: fixed;
@@ -107,9 +74,9 @@ st.markdown(
         clear: both;
     }
 
-    /* Add bottom padding so chat doesn’t get cut off */
+    /* Add space for footer + input */
     .block-container {
-        padding-bottom: 120px !important;
+        padding-bottom: 140px !important;
     }
     </style>
     """,
@@ -139,17 +106,26 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "last_date" not in st.session_state:
     st.session_state.last_date = None
-if "chat_box" not in st.session_state:
-    st.session_state.chat_box = ""
 
-# 📥 Input row pinned at bottom
-st.markdown("<div class='input-row'>", unsafe_allow_html=True)
-col1, col2 = st.columns([6, 1])
-with col1:
-    user_input = st.text_input("Type your message here...", key="chat_box", label_visibility="collapsed")
-with col2:
-    send_clicked = st.button("Send")
-st.markdown("</div>", unsafe_allow_html=True)
+# 📜 Chat history
+for msg in st.session_state.messages:
+    current_date = datetime.now().strftime("%A, %B %d")
+    if st.session_state.last_date != current_date:
+        st.markdown(f"<div class='divider'>{current_date}</div>", unsafe_allow_html=True)
+        st.session_state.last_date = current_date
+
+    if msg["role"] == "user":
+        st.markdown(f"<div class='user-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<div class='assistant-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
+
+# 📥 Input form pinned at bottom
+with st.form(key="chat_form", clear_on_submit=True):
+    cols = st.columns([6, 1])
+    with cols[0]:
+        user_input = st.text_input("Type your message here...", key="chat_box", label_visibility="collapsed")
+    with cols[1]:
+        send_clicked = st.form_submit_button("Send")
 
 # 🚀 Handle new message
 if user_input and send_clicked:
@@ -171,22 +147,7 @@ if user_input and send_clicked:
         "content": reply,
         "time": datetime.now().strftime("%H:%M")
     })
-
-    # ✅ Clear input safely
-    st.session_state["chat_box"] = ""
     st.experimental_rerun()
-
-# 📜 Chat history
-for msg in st.session_state.messages:
-    current_date = datetime.now().strftime("%A, %B %d")
-    if st.session_state.last_date != current_date:
-        st.markdown(f"<div class='divider'>{current_date}</div>", unsafe_allow_html=True)
-        st.session_state.last_date = current_date
-
-    if msg["role"] == "user":
-        st.markdown(f"<div class='user-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<div class='assistant-bubble'>{msg['content']}<br><small>{msg['time']}</small></div>", unsafe_allow_html=True)
 
 # 📌 Footer
 st.markdown(
